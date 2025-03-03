@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">{{ titulo }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Advertencia:</strong> Esta acción no se puede deshacer.
+            </div>
+
+            <p class="lead">
+                ¿Está seguro que desea eliminar el siguiente despacho?
+            </p>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ objeto.nombre }}</h5>
+                    <p class="card-text">
+                        <strong>Código:</strong> {{ objeto.codigo }}<br>
+                        <strong>Jurisdicción:</strong> {{ objeto.jurisdiccion }}<br>
+                        <strong>Distrito:</strong> {{ objeto.distrito }}<br>
+                        <strong>Circuito:</strong> {{ objeto.circuito }}<br>
+                        <strong>Municipio:</strong> {{ objeto.municipio }}
+                    </p>
+                    {% if objeto.observaciones %}
+                        <p class="card-text">
+                            <strong>Observaciones:</strong><br>
+                            {{ objeto.observaciones }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Sí, eliminar despacho
+                    </button>
+                    <a href="{% url 'despachos:lista' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

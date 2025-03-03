@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Filtros de Búsqueda</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                {% for field in filter.form %}
+                <div class="col-md-4">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <a href="{% url 'despachos:lista' %}" class="btn btn-secondary">Limpiar Filtros</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Resultados ({{ total_despachos }})</h5>
+            <div class="btn-group">
+                <a href="{% url 'despachos:exportar' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Exportar a Excel
+                </a>
+                {% if user.tipo_usuario == 'MAG' %}
+                    <a href="{% url 'despachos:crear' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Despacho
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Resto de tu plantilla -->
+</div>
+{% endblock %} 

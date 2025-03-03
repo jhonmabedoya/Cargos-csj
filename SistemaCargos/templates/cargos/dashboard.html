@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Bienvenido, {{ user.username }}</h2>
+    <p>Tipo de usuario: {% if user.tipo_usuario == 'MAG' %}Magistrado{% else %}Invitado{% endif %}</p>
+
+    <h3>Opciones Disponibles:</h3>
+    <ul>
+        <li><a href="{% url 'despachos' %}">Consultar Despachos</a></li>
+        <li><a href="{% url 'novedades' %}">Ver Novedades</a></li>
+        <li><a href="{% url 'funcionarios' %}">Consultar Funcionarios</a></li>
+        {% if user.tipo_usuario == 'MAG' %}
+            <li><a href="{% url 'crear_despacho' %}">Crear Despacho</a></li>
+        {% endif %}
+    </ul>
+
+    <a href="{% url 'logout' %}">Cerrar sesión</a>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Dashboard</h2>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Despachos</h5>
+                    <p class="card-text">Gestión de despachos judiciales</p>
+                    <a href="{% url 'despachos:lista' %}" class="btn btn-primary">Ver Despachos</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Funcionarios</h5>
+                    <p class="card-text">Gestión de funcionarios</p>
+                    <a href="{% url 'funcionarios:lista' %}" class="btn btn-primary">Ver Funcionarios</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Novedades</h5>
+                    <p class="card-text">Gestión de novedades</p>
+                    <a href="{% url 'novedades:lista' %}" class="btn btn-primary">Ver Novedades</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
