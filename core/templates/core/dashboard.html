@@ -1,33 +1,96 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Dashboard</h2>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            <div class="card">
+<div class="container-fluid">
+    <!-- Mensaje de Bienvenida -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Despachos</h5>
-                    <p class="card-text">Gestión de despachos judiciales</p>
-                    <a href="{% url 'despachos:lista' %}" class="btn btn-primary">Ver Despachos</a>
+                    <div class="d-flex align-items-center">
+                        <div class="display-4 me-3">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div>
+                            <h2 class="mb-1">¡Bienvenido, {{ user.get_full_name|default:user.username }}!</h2>
+                            <p class="mb-0">
+                                <i class="fas fa-user-tag"></i>
+                                Tipo de usuario: {{ user.get_tipo_usuario_display }}
+                            </p>
+                            <p class="mb-0">
+                                <i class="fas fa-clock"></i>
+                                Último acceso: {{ user.last_login|date:"j \d\e F \d\e Y - g:i a" }}
+                            </p>
+                            <p class="mb-0 mt-2">
+                                <a href="{% url 'usuarios:cambiar_password' %}" class="btn btn-light">
+                                    <i class="fas fa-key"></i> Cambiar Contraseña
+                                </a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
+    </div>
+
+    <!-- Resumen del Sistema -->
+    <div class="row">
+        <!-- Tarjeta de Despachos -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Funcionarios</h5>
-                    <p class="card-text">Gestión de funcionarios</p>
-                    <a href="{% url 'funcionarios:lista' %}" class="btn btn-primary">Ver Funcionarios</a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Despachos</h5>
+                            <h2 class="mb-0">{{ total_despachos }}</h2>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-building fa-3x"></i>
+                        </div>
+                    </div>
+                    <a href="{% url 'despachos:lista' %}" class="btn btn-primary mt-3">
+                        <i class="fas fa-arrow-right"></i> Ver Despachos
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
+
+        <!-- Tarjeta de Funcionarios -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Novedades</h5>
-                    <p class="card-text">Gestión de novedades</p>
-                    <a href="{% url 'novedades:lista' %}" class="btn btn-primary">Ver Novedades</a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Funcionarios</h5>
+                            <h2 class="mb-0">{{ total_funcionarios }}</h2>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-users fa-3x"></i>
+                        </div>
+                    </div>
+                    <a href="{% url 'funcionarios:lista' %}" class="btn btn-success mt-3">
+                        <i class="fas fa-arrow-right"></i> Ver Funcionarios
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Novedades -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Novedades</h5>
+                            <h2 class="mb-0">{{ total_novedades }}</h2>
+                        </div>
+                        <div class="text-warning">
+                            <i class="fas fa-clipboard-list fa-3x"></i>
+                        </div>
+                    </div>
+                    <a href="{% url 'novedades:lista' %}" class="btn btn-warning mt-3">
+                        <i class="fas fa-arrow-right"></i> Ver Novedades
+                    </a>
                 </div>
             </div>
         </div>

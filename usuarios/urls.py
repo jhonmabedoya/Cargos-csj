@@ -8,4 +8,5 @@ urlpatterns = [
     path('crear/', views.crear, name='crear'),
     path('<int:pk>/editar/', views.editar, name='editar'),
     path('<int:pk>/eliminar/', views.eliminar, name='eliminar'),
+    path('cambiar-password/', views.cambiar_password, name='cambiar_password'),
 ] 

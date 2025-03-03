@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from core.decorators import requiere_admin_o_magistrado
 from .models import Usuario
-from .forms import UsuarioForm
+from .forms import UsuarioForm, CambiarPasswordForm
 
 @login_required
 @requiere_admin_o_magistrado
@@ -66,4 +66,20 @@ def eliminar(request, pk):
     return render(request, 'usuarios/confirmar_eliminar.html', {
         'objeto': usuario,
         'titulo': 'Eliminar Usuario'
+    })
+
+@login_required
+def cambiar_password(request):
+    if request.method == 'POST':
+        form = CambiarPasswordForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tu contraseña ha sido actualizada exitosamente.')
+            return redirect('core:dashboard')
+    else:
+        form = CambiarPasswordForm(request.user)
+    
+    return render(request, 'usuarios/cambiar_password.html', {
+        'form': form,
+        'titulo': 'Cambiar Contraseña'
     }) 
