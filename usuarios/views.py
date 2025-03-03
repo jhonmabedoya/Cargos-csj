@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from core.decorators import requiere_admin_o_magistrado
+from core.decorators import requiere_admin_o_magistrado, requiere_admin, requiere_magistrado
 from .models import Usuario
 from .forms import UsuarioForm, CambiarPasswordForm
 
 @login_required
-@requiere_admin_o_magistrado
+@requiere_admin
 def lista(request):
     usuarios = Usuario.objects.all().order_by('username')
     return render(request, 'usuarios/lista.html', {
@@ -15,7 +15,7 @@ def lista(request):
     })
 
 @login_required
-@requiere_admin_o_magistrado
+@requiere_admin
 def crear(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
@@ -32,7 +32,7 @@ def crear(request):
     })
 
 @login_required
-@requiere_admin_o_magistrado
+@requiere_admin
 def editar(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     if request.method == 'POST':
@@ -51,7 +51,7 @@ def editar(request, pk):
     })
 
 @login_required
-@requiere_admin_o_magistrado
+@requiere_admin
 def eliminar(request, pk):
     usuario = get_object_or_404(Usuario, pk=pk)
     # Evitar que se elimine a sí mismo

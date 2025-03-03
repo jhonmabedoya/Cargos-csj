@@ -20,3 +20,12 @@ def requiere_admin_o_magistrado(view_func):
         messages.error(request, 'No tienes permisos para realizar esta acción.')
         return redirect('core:dashboard')
     return wrapper 
+
+def requiere_admin(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_staff:
+            return view_func(request, *args, **kwargs)
+        messages.error(request, 'No tienes permisos para realizar esta acción.')
+        return redirect('core:dashboard')
+    return wrapper
