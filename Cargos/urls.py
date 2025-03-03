@@ -38,4 +38,5 @@ urlpatterns = [
     ), name='login'),
     
     path('logout/', logout_view, name='logout'),
+    path('usuarios/', include('usuarios.urls')),
 ]

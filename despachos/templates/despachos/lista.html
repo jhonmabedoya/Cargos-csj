@@ -1,46 +1,108 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5 class="mb-0">Filtros de Búsqueda</h5>
-        </div>
-        <div class="card-body">
-            <form method="get" class="row g-3">
-                {% for field in filter.form %}
-                <div class="col-md-4">
-                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.help_text %}
-                    <div class="form-text">{{ field.help_text }}</div>
-                    {% endif %}
-                </div>
-                {% endfor %}
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
-                    <a href="{% url 'despachos:lista' %}" class="btn btn-secondary">Limpiar Filtros</a>
-                </div>
-            </form>
-        </div>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Despachos</h1>
+        {% if user.tipo_usuario == 'magistrado' %}
+        <a href="{% url 'despachos:crear' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Despacho
+        </a>
+        {% endif %}
     </div>
 
-    <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Resultados ({{ total_despachos }})</h5>
-            <div class="btn-group">
-                <a href="{% url 'despachos:exportar' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" class="btn btn-success">
-                    <i class="fas fa-file-excel"></i> Exportar a Excel
-                </a>
-                {% if user.tipo_usuario == 'MAG' %}
-                    <a href="{% url 'despachos:crear' %}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nuevo Despacho
-                    </a>
-                {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <!-- Formulario de búsqueda -->
+            <form method="get" class="mb-4">
+                <div class="row g-3">
+                    {{ filter.form.as_div }}
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                        <a href="{% url 'despachos:lista' %}" class="btn btn-secondary">
+                            <i class="fas fa-undo"></i> Limpiar
+                        </a>
+                        <a href="{% url 'despachos:exportar' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}" 
+                           class="btn btn-success float-end">
+                            <i class="fas fa-file-excel"></i> Exportar a Excel
+                        </a>
+                    </div>
+                </div>
+            </form>
+
+            {% if despachos %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Municipio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for despacho in despachos %}
+                            <tr>
+                                <td>{{ despacho.codigo }}</td>
+                                <td>{{ despacho.nombre }}</td>
+                                <td>{{ despacho.municipio }}</td>
+                                <td>
+                                    {% if user.tipo_usuario == 'magistrado' %}
+                                    <a href="{% url 'despachos:editar' despacho.pk %}" 
+                                       class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'despachos:eliminar' despacho.pk %}" 
+                                       class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <!-- Mensaje cuando no hay resultados -->
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-info-circle me-2"></i>
+                    {% if request.GET %}
+                        No se encontraron despachos que coincidan con tu búsqueda.
+                        <br>
+                        <a href="{% url 'despachos:lista' %}" class="alert-link">
+                            <i class="fas fa-undo me-1"></i>Limpiar filtros
+                        </a>
+                    {% else %}
+                        No hay despachos registrados en el sistema.
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="mt-3">
+                <p class="text-muted">
+                    Total de despachos: {{ total_despachos }}
+                </p>
             </div>
         </div>
     </div>
-
-    <!-- Resto de tu plantilla -->
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Agregar clases de Bootstrap a los campos del formulario
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('input[type="text"], select').forEach(function(element) {
+            element.classList.add('form-control');
+        });
+        document.querySelectorAll('div.form-group').forEach(function(element) {
+            element.classList.add('col-md-4', 'mb-3');
+        });
+    });
+</script>
 {% endblock %} 
