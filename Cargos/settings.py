@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     # Local apps
     'usuarios',
     'core',
+    'tipocargos.apps.TipocargosConfig',
     'despachos',
     'funcionarios',
     'novedades',
     'calificaciones',
     'licencias',
     'vacantes',
+    'cargosasignados',
 
 ]
 

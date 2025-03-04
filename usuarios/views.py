@@ -4,6 +4,8 @@ from django.contrib import messages
 from core.decorators import requiere_admin_o_magistrado, requiere_admin, requiere_magistrado
 from .models import Usuario
 from .forms import UsuarioForm, CambiarPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 @login_required
 @requiere_admin
@@ -71,15 +73,24 @@ def eliminar(request, pk):
 @login_required
 def cambiar_password(request):
     if request.method == 'POST':
-        form = CambiarPasswordForm(request.user, request.POST)
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            update_session_auth_hash(request, user)
             messages.success(request, 'Tu contraseña ha sido actualizada exitosamente.')
-            return redirect('core:dashboard')
+            return redirect('usuarios:perfil')
+        else:
+            messages.error(request, 'Por favor corrige los errores indicados.')
     else:
-        form = CambiarPasswordForm(request.user)
+        form = PasswordChangeForm(request.user)
     
     return render(request, 'usuarios/cambiar_password.html', {
-        'form': form,
-        'titulo': 'Cambiar Contraseña'
+        'form': form
+    })
+
+@login_required
+def perfil(request):
+    """Vista para mostrar y editar el perfil del usuario."""
+    return render(request, 'usuarios/perfil.html', {
+        'usuario': request.user
     }) 

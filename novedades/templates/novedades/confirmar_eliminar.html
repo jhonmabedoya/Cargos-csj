@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Novedad{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Confirmar Eliminación</h2>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>¡Advertencia!</strong> Esta acción no se puede deshacer.
+        </div>
+
+        <div class="mb-4">
+            <h4>Detalles de la Novedad:</h4>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Tipo:</strong> {{ novedad.get_tipo_display }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Cargo:</strong> {{ novedad.cargo }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Despacho:</strong> {{ novedad.nombre_despacho }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Fecha Acto:</strong> {{ novedad.fecha_acto|date:"d/m/Y" }}
+                </li>
+            </ul>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Confirmar Eliminación
+            </button>
+            <a href="{% url 'novedades:lista' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %} 

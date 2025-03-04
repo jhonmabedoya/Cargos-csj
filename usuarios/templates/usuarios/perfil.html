@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2><i class="fas fa-id-card"></i> Mi Perfil</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Información del Usuario</h4>
+                <table class="table">
+                    <tr>
+                        <th>Nombre de Usuario:</th>
+                        <td>{{ usuario.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nombre:</th>
+                        <td>{{ usuario.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Apellido:</th>
+                        <td>{{ usuario.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ usuario.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Último acceso:</th>
+                        <td>{{ usuario.last_login|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                </table>
+                
+                <div class="mt-3">
+                    <a href="{% url 'usuarios:cambiar_password' %}" class="btn btn-primary">
+                        <i class="fas fa-key"></i> Cambiar Contraseña
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

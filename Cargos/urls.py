@@ -28,6 +28,7 @@ def logout_view(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
+    path('usuarios/', include('usuarios.urls')),
     path('despachos/', include('despachos.urls')),
     path('funcionarios/', include('funcionarios.urls')),
     path('novedades/', include('novedades.urls')),
@@ -38,5 +39,4 @@ urlpatterns = [
     ), name='login'),
     
     path('logout/', logout_view, name='logout'),
-    path('usuarios/', include('usuarios.urls')),
 ]

@@ -1,24 +1,31 @@
 from django.db import models
-from funcionarios.models import Funcionario
+from django.conf import settings
 
 class Novedad(models.Model):
     TIPOS_NOVEDAD = [
-        ('LICENCIA', 'Licencia'),
-        ('VACACIONES', 'Vacaciones'),
-        ('PERMISO', 'Permiso'),
-        # ... otros tipos
+        ('renuncia', 'Renuncia'),
+        ('provisionalidad', 'Provisionalidad'),
+        ('propiedad', 'Propiedad'),
     ]
     
-    funcionario = models.ForeignKey(Funcionario, on_delete=models.PROTECT)
     tipo = models.CharField(max_length=20, choices=TIPOS_NOVEDAD)
-    fecha_inicio = models.DateField()
-    fecha_fin = models.DateField()
-    observaciones = models.TextField(blank=True)
-
+    cargo = models.ForeignKey('tipocargos.TipoCargo', on_delete=models.CASCADE)
+    detalle = models.TextField()
+    codigo_despacho = models.ForeignKey('despachos.Despacho', on_delete=models.CASCADE)
+    nombre_despacho = models.CharField(max_length=200, editable=False)
+    fecha_acto = models.DateField(verbose_name='Fecha de Acto Administrativo')
+    fecha_posesion = models.DateField(verbose_name='Fecha de Posesión')
+    observaciones = models.TextField(blank=True, null=True)
+    
     class Meta:
-        ordering = ['-fecha_inicio']
+        ordering = ['-fecha_acto']
         verbose_name = 'Novedad'
         verbose_name_plural = 'Novedades'
 
     def __str__(self):
-        return f"{self.funcionario} - {self.tipo} ({self.fecha_inicio})"
+        return f"{self.get_tipo_display()} - ({self.fecha_acto})"
+
+    def save(self, *args, **kwargs):
+        if self.codigo_despacho:
+            self.nombre_despacho = self.codigo_despacho.nombre
+        super().save(*args, **kwargs)
